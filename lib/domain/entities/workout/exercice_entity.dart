@@ -1,7 +1,6 @@
-import 'dart:ffi';
 
 class ExerciseEntity {
-  final Long id;
+  final int id;
   final String name;
   final int sets;
   final int reps;

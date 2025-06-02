@@ -2,7 +2,7 @@ import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/muscle_day_entity.dart';
 
 class WorkoutEntity {
-  final String id;
+  final int id;
   final String name;
   final WorkoutTypeEnum type;
   final List<MuscleDayEntity> muscleDays;

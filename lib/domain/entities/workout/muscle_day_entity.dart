@@ -1,11 +1,10 @@
-import 'dart:ffi';
 
 import 'package:muscle_up_mobile/core/enum/workout/muscle_group_enum.dart';
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
 
 class MuscleDayEntity {
-  final Long id;
+  final int id;
   final WorkoutTypeEnum type; // A, B, C, etc.
   final MuscleGroupEnum muscleGroup; // Peito, Costas, etc.
   final List<ExerciseEntity> exercises;
@@ -19,7 +18,7 @@ class MuscleDayEntity {
 
   factory MuscleDayEntity.fromMap(Map<String, dynamic> map) {
     return MuscleDayEntity(
-      id: map['id'] as Long,
+      id: map['id'] as int,
       type: WorkoutTypeEnum.values.firstWhere(
         (e) => e.name == map['type'],
         orElse: () => WorkoutTypeEnum.A, // Valor padrão ou erro, se preferir

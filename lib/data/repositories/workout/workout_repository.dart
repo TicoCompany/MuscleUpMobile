@@ -82,7 +82,7 @@ final class WorkoutRepository implements IWorkoutRepository {
       }
     }
   }
-
+  
   Future<List<WorkoutEntity>> _getAllWorkoutsFromDbAsync() async {
     final workoutMaps =
         await _relationalDataSource.rawQuery('SELECT * FROM workout') ?? [];
@@ -132,4 +132,5 @@ final class WorkoutRepository implements IWorkoutRepository {
       );
     }).toList();
   }
+  
 }
