@@ -21,8 +21,9 @@ final class RouteGeneratorHelper {
       kWorkoutDetails when args is WorkoutEntity =>
         createRoutePage(WorkoutDetailsPage(workout: args)),
 
-      kMuscleDayDetails when args is MuscleDayEntity =>
-        createRoutePage(MuscleDayPage(muscleDay: args)),
+      kMuscleDayDetails when args is List<MuscleDayEntity> =>
+    createRoutePage(MuscleDayPage(muscleDays: args)),
+
 
       _ => createRouteError(),
     };

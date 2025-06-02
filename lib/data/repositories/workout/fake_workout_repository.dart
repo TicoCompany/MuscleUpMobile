@@ -27,7 +27,7 @@ class FakeWorkoutRepository implements IWorkoutRepository {
             ),
             ExerciseEntity(
               id: 1002,
-              name: 'Tríceps Testa',
+              name: 'Supino Inclinado',
               sets: 3,
               reps: 12,
               weight: 25,
@@ -47,6 +47,18 @@ class FakeWorkoutRepository implements IWorkoutRepository {
               reps: 8,
               weight: 0,
               notes: 'Peso corporal',
+            ),
+          ],
+        ),
+        MuscleDayEntity(id: 5, type: WorkoutTypeEnum.B, muscleGroup: MuscleGroupEnum.biceps, exercises: 
+          [
+            ExerciseEntity(
+              id: 1004,
+              name: 'Rosca Direta',
+              sets: 3,
+              reps: 10,
+              weight: 20,
+              notes: 'Use barra reta',
             ),
           ],
         ),

@@ -24,14 +24,18 @@ class WorkoutDetailsPage extends StatelessWidget {
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 20),
             ...types.map((type) => ElevatedButton(
-                  onPressed: () {
-                    final muscleDay = muscleDays.firstWhere((e) => e.type == type);
-                    Navigator.pushNamed(
-                      context,
-                      RouteGeneratorHelper.kMuscleDayDetails,
-                      arguments: muscleDay,
-                    );
-                  },
+                 onPressed: () {
+                  // Filtra a lista muscleDays para pegar **todos** os MuscleDayEntity com o tipo atual
+                  final muscleDaysOfType = muscleDays.where((e) => e.type == type).toList();
+
+                  Navigator.pushNamed(
+                    context,
+                    RouteGeneratorHelper.kMuscleDayDetails,
+                    arguments: muscleDaysOfType, // <-- lista, não um único objeto
+                  );
+                },
+
+
                   child: Text('Dia $type'),
                 )),
           ],

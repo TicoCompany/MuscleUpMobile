@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:muscle_up_mobile/configs/assets_helper.dart';
 import 'package:muscle_up_mobile/domain/entities/core/request_state_entity.dart';
-import 'package:muscle_up_mobile/domain/entities/workout/muscle_day_entity.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/workout_entity.dart';
 import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_viewmodel.dart';
 import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_factory_viewmodel.dart';
