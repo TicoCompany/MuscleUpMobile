@@ -87,9 +87,10 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: ElevatedButton(
                   onPressed: isProcessing ? null : onAuthentication,
-                  child: !isProcessing
-                      ? Text(UtilText.labelLoginTitle.toUpperCase())
-                      : const ProgressIndicatorWidget(),
+                  child:
+                      !isProcessing
+                          ? Text(UtilText.labelLoginTitle.toUpperCase())
+                          : const ProgressIndicatorWidget(),
                 ),
               ),
             ],

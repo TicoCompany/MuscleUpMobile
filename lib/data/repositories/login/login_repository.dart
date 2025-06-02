@@ -20,14 +20,13 @@ final class LoginRepository implements ILoginRepository {
 
   @override
   Future<String> authenticationAsync(LoginEntity login) async {
-    final HttpResponseEntity? httpResponse =
-        await _remoteDataSource.post(
-          _urlAuthentication,
-          jsonEncode(login.toMap()),
-        );
+    final HttpResponseEntity? httpResponse = await _remoteDataSource.post(
+      _urlAuthentication,
+      jsonEncode(login.toMap()),
+    );
     debugPrint('antes');
     if (httpResponse == null) throw LoginNotFoundException();
-    
+
     if (!httpResponse.toBool()) throw LoginNotFoundException();
 
     if (httpResponse.data == null) throw LoginNotFoundException();
@@ -39,14 +38,13 @@ final class LoginRepository implements ILoginRepository {
   }
 
   Future<bool> _saveTokenAsync(String token) async {
-  final result = await _nonRelationalDataSource.saveString(
-    DataBaseNoSqlSchemaHelper.kUserToken,
-    token,
-  );
+    final result = await _nonRelationalDataSource.saveString(
+      DataBaseNoSqlSchemaHelper.kUserToken,
+      token,
+    );
 
-  return result ?? false;
-}
-
+    return result ?? false;
+  }
 
   String get _urlAuthentication =>
       _remoteDataSource.environment?.urlAuthentication ?? '';

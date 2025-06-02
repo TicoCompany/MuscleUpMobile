@@ -1,6 +1,5 @@
 import 'dart:async';
 
-//import 'package:muscle_up_mobile/configs/data_base_schema_helper.dart';
 import 'package:muscle_up_mobile/core/library/extensions.dart'
     show ParsingStringList;
 import 'package:sqflite/sqflite.dart';
@@ -58,8 +57,33 @@ final class MigrateService implements IMigrateService {
 
   @override
   Future<void> onCreate(Database db, int _) async {
-    // Crie aqui outras tabelas necessárias no futuro, exemplo:
-    // await _createTableOrders(db);
+    await db.execute('''
+      CREATE TABLE workout (
+        id TEXT PRIMARY KEY,
+        name TEXT,
+        type TEXT
+      );
+
+      CREATE TABLE muscle_day (
+        id TEXT PRIMARY KEY,
+        workout_id TEXT,
+        type TEXT,
+        muscle_groups TEXT,
+        FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE exercise (
+        id TEXT PRIMARY KEY,
+        muscle_day_id TEXT,
+        name TEXT,
+        sets INTEGER,
+        reps INTEGER,
+        weight REAL,
+        notes TEXT,
+        FOREIGN KEY (muscle_day_id) REFERENCES muscle_day(id) ON DELETE CASCADE
+      );
+
+  ''');
   }
 
   @override
