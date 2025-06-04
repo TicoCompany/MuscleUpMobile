@@ -6,7 +6,9 @@ import 'package:muscle_up_mobile/ui/workout/pages/workout_screen.dart';
 import 'package:muscle_up_mobile/ui/workout/pages/workout_details_screen.dart'; 
 import 'package:muscle_up_mobile/ui/workout/pages/muscle_day_screen.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/workout_entity.dart';
-import 'package:muscle_up_mobile/domain/entities/workout/muscle_day_entity.dart';   
+import 'package:muscle_up_mobile/domain/entities/workout/muscle_day_entity.dart';  
+import 'package:muscle_up_mobile/ui/workout/pages/exercise_details_screen.dart'; 
+import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
 
 
 final class RouteGeneratorHelper {
@@ -24,6 +26,8 @@ final class RouteGeneratorHelper {
       kMuscleDayDetails when args is List<MuscleDayEntity> =>
     createRoutePage(MuscleDayPage(muscleDays: args)),
 
+      kExerciseDetails when args is ExerciseEntity =>
+    createRoutePage(ExerciseDetailsPage(exercise: args)),
 
       _ => createRouteError(),
     };
@@ -47,6 +51,7 @@ final class RouteGeneratorHelper {
   // NOVAS ROTAS
   static const String kWorkoutDetails = '/workout/details';
   static const String kMuscleDayDetails = '/workout/muscleday';
+  static const String kExerciseDetails = '/workout/exercise';
 
   static void onRouteInitialization(String route) {
     if (route.isNotEmpty) {

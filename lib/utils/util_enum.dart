@@ -5,13 +5,32 @@ abstract class UtilEnum {
   static String getWorkoutTypeName(WorkoutTypeEnum type) {
     switch (type) {
       case WorkoutTypeEnum.A:
-        return 'Treino A';
+        return 'A';
       case WorkoutTypeEnum.B:
-        return 'Treino B';
+        return 'B';
       case WorkoutTypeEnum.C:
-        return 'Treino C';
-      default:
-        return 'Desconhecido';
+        return 'C';
+      case WorkoutTypeEnum.D:
+        return 'D';
+      case WorkoutTypeEnum.E:
+        return 'E';
+      case WorkoutTypeEnum.F:
+        return 'F';
+      case WorkoutTypeEnum.G:
+        return 'G';
+      case WorkoutTypeEnum.AB:
+        return 'AB';
+      case WorkoutTypeEnum.ABC:
+        return 'ABC';
+      case WorkoutTypeEnum.ABCD:
+        return 'ABCD';
+      case WorkoutTypeEnum.ABCDE:
+        return 'ABCDE';
+      case WorkoutTypeEnum.ABCDEF:
+        return 'ABCDEF';
+      case WorkoutTypeEnum.ABCDEFG:
+        return 'ABCDEFG';
     }
   }
 }
+

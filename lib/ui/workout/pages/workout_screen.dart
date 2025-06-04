@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muscle_up_mobile/configs/assets_helper.dart';
 import 'package:muscle_up_mobile/domain/entities/core/request_state_entity.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/workout_entity.dart';
 import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_viewmodel.dart';
@@ -33,44 +32,43 @@ class _WorkoutScreenBody extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [Color(0xFF6A7091), Colors.white],
-            stops: [0.0, 0.40],
+            stops: [0.0, 0.35],
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 48),
-                child: Center(
-                  child: Image.asset(
-                    AssetsHelper.kLogo,
-                    height: MediaQuery.of(context).size.height * 0.2,
-                  ),
+            const SizedBox(height: 60),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                'Treinos',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: const [
-                    Text(
-                      'Meus Treinos',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Expanded(child: _WorkoutListWidget()),
-                  ],
+            const SizedBox(height: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                'Meus Treinos',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
                 ),
               ),
             ),
-            const Expanded(flex: 2, child: SizedBox()),
+            const SizedBox(height: 12),
+            const Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: _WorkoutListWidget(),
+              ),
+            ),
           ],
         ),
       ),
@@ -114,31 +112,42 @@ class _WorkoutListWidget extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withOpacity(0.95),
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
+                        blurRadius: 6,
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(
-                        workout.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                      const Icon(Icons.fitness_center, size: 32, color: Color(0xFF6A7091)),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              workout.name,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Tipo: ${UtilEnum.getWorkoutTypeName(workout.type)}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Tipo: ${UtilEnum.getWorkoutTypeName(workout.type)}',
-                        style: const TextStyle(fontSize: 14, color: Colors.black54),
-                      ),
+                      )
                     ],
                   ),
                 ),

@@ -36,7 +36,7 @@ class WorkoutDetailsPage extends StatelessWidget {
                 },
 
 
-                  child: Text('Dia $type'),
+                  child: Text('Dia ${UtilEnum.getWorkoutTypeName(type)}'),
                 )),
           ],
         ),

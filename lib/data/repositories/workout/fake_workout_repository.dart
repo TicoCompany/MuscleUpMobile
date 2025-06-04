@@ -9,8 +9,8 @@ class FakeWorkoutRepository implements IWorkoutRepository {
   final List<WorkoutEntity> _fakeWorkouts = [
     WorkoutEntity(
       id: 1,
-      name: 'Treino A - Peito e Tríceps',
-      type: WorkoutTypeEnum.A,
+      name: 'Treino Hipertrofia',
+      type: WorkoutTypeEnum.AB,
       muscleDays: [
         MuscleDayEntity(
           id: 101,
