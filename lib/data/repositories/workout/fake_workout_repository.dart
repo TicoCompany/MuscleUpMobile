@@ -77,4 +77,10 @@ class FakeWorkoutRepository implements IWorkoutRepository {
     _fakeWorkouts.removeWhere((w) => w.id == workout.id);
     _fakeWorkouts.add(workout);
   }
+
+  @override
+  Future<void> createWorkout(WorkoutEntity workout) async {
+    await Future.delayed(Duration(milliseconds: 300)); // simula carregamento
+    _fakeWorkouts.add(workout);
+  }
 }

@@ -1,3 +1,4 @@
+  import 'dart:convert';
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/core/library/extensions.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
@@ -10,6 +11,8 @@ import 'package:muscle_up_mobile/domain/error/workout/workout_exception.dart';
 abstract interface class IWorkoutRepository {
   Future<List<WorkoutEntity>> getAllWorkouts();
   Future<void> saveWorkoutLocallyAsync(WorkoutEntity workout);
+  Future<void> createWorkout(WorkoutEntity workout);
+
 }
 
 final class WorkoutRepository implements IWorkoutRepository {
@@ -132,5 +135,24 @@ final class WorkoutRepository implements IWorkoutRepository {
       );
     }).toList();
   }
+
+
+@override
+Future<void> createWorkout(WorkoutEntity workout) async {
+  final String url = _remoteDataSource.environment?.urlWorkout ?? '';
+  final String body = jsonEncode(workout.toMap());
+
+  try {
+    final HttpResponseEntity? response = await _remoteDataSource.post(url, body);
+
+    if (response == null || !response.toBool()) {
+      throw Exception('Erro ao criar treino');
+    }
+  } catch (e) {
+    throw Exception('Falha ao enviar o treino: $e');
+  }
+}
+
+
   
 }
