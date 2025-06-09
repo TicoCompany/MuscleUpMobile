@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: RouteGeneratorHelper.kInitial,
+      initialRoute: RouteGeneratorHelper.kWorkoutInfo,
       onGenerateRoute: RouteGeneratorHelper.generateRoute,
     );
   }

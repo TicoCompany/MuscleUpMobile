@@ -1,5 +1,5 @@
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
-import 'package:muscle_up_mobile/core/enum/workout/muscle_group_enum.dart'; // Supondo que seja esse o caminho
+import 'package:muscle_up_mobile/core/enum/workout/muscle_group_enum.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/muscle_day_entity.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/workout_entity.dart';
@@ -50,8 +50,11 @@ class FakeWorkoutRepository implements IWorkoutRepository {
             ),
           ],
         ),
-        MuscleDayEntity(id: 5, type: WorkoutTypeEnum.B, muscleGroup: MuscleGroupEnum.biceps, exercises: 
-          [
+        MuscleDayEntity(
+          id: 5,
+          type: WorkoutTypeEnum.B,
+          muscleGroup: MuscleGroupEnum.biceps,
+          exercises: [
             ExerciseEntity(
               id: 1004,
               name: 'Rosca Direta',
@@ -65,6 +68,18 @@ class FakeWorkoutRepository implements IWorkoutRepository {
       ],
     ),
   ];
+
+  final List<ExerciseEntity> _fakeExercises = List.generate(
+    10,
+    (i) => ExerciseEntity(
+      id: i,
+      name: 'Exercício ${i + 1}',
+      sets: 3,
+      reps: 12,
+      weight: 20.0 + i,
+      notes: 'Nota para exercício ${i + 1}',
+    ),
+  );
 
   @override
   Future<List<WorkoutEntity>> getAllWorkouts() async {
@@ -82,5 +97,11 @@ class FakeWorkoutRepository implements IWorkoutRepository {
   Future<void> createWorkout(WorkoutEntity workout) async {
     await Future.delayed(Duration(milliseconds: 300)); // simula carregamento
     _fakeWorkouts.add(workout);
+  }
+
+  @override
+  Future<List<ExerciseEntity>> getAllExercises() async {
+    await Future.delayed(Duration(milliseconds: 300)); // simula carregamento
+    return _fakeExercises;
   }
 }

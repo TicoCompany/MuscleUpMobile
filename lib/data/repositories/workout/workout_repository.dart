@@ -1,4 +1,4 @@
-  import 'dart:convert';
+import 'dart:convert';
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/core/library/extensions.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
@@ -12,7 +12,7 @@ abstract interface class IWorkoutRepository {
   Future<List<WorkoutEntity>> getAllWorkouts();
   Future<void> saveWorkoutLocallyAsync(WorkoutEntity workout);
   Future<void> createWorkout(WorkoutEntity workout);
-
+  Future<List<ExerciseEntity>> getAllExercises();
 }
 
 final class WorkoutRepository implements IWorkoutRepository {
@@ -21,6 +21,7 @@ final class WorkoutRepository implements IWorkoutRepository {
 
   const WorkoutRepository(this._remoteDataSource, this._relationalDataSource);
 
+  @override
   Future<List<WorkoutEntity>> getAllWorkouts() async {
     final String url = _remoteDataSource.environment?.urlWorkout ?? '';
 
@@ -34,14 +35,12 @@ final class WorkoutRepository implements IWorkoutRepository {
       final List<dynamic> dataList = response.data;
       final workouts = dataList.map((e) => WorkoutEntity.fromMap(e)).toList();
 
-      // Salva todos localmente
       for (final workout in workouts) {
         await saveWorkoutLocallyAsync(workout);
       }
 
       return workouts;
     } catch (e) {
-      // fallback: busca local
       final localWorkouts = await _getAllWorkoutsFromDbAsync();
       if (localWorkouts.isEmpty) throw WorkoutNotFoundException();
       return localWorkouts;
@@ -50,7 +49,6 @@ final class WorkoutRepository implements IWorkoutRepository {
 
   @override
   Future<void> saveWorkoutLocallyAsync(WorkoutEntity workout) async {
-    // Exclui registros antigos
     await _relationalDataSource.delete(
       'workout',
       where: 'id = ?',
@@ -68,8 +66,7 @@ final class WorkoutRepository implements IWorkoutRepository {
         'id': muscleDay.id,
         'workoutId': workout.id,
         'type': muscleDay.type,
-        'muscleGroups':
-            muscleDay.muscleGroup, // ajuste conforme sua estrutura real
+        'muscleGroups': muscleDay.muscleGroup,
       });
 
       for (final exercise in muscleDay.exercises) {
@@ -85,44 +82,32 @@ final class WorkoutRepository implements IWorkoutRepository {
       }
     }
   }
-  
+
   Future<List<WorkoutEntity>> _getAllWorkoutsFromDbAsync() async {
-    final workoutMaps =
-        await _relationalDataSource.rawQuery('SELECT * FROM workout') ?? [];
-    final muscleDayMaps =
-        await _relationalDataSource.rawQuery('SELECT * FROM muscle_day') ?? [];
-    final exerciseMaps =
-        await _relationalDataSource.rawQuery('SELECT * FROM exercise') ?? [];
+    final workoutMaps = await _relationalDataSource.rawQuery('SELECT * FROM workout') ?? [];
+    final muscleDayMaps = await _relationalDataSource.rawQuery('SELECT * FROM muscle_day') ?? [];
+    final exerciseMaps = await _relationalDataSource.rawQuery('SELECT * FROM exercise') ?? [];
 
     return workoutMaps.map((workout) {
-      // Pega os muscleDays do workout atual
-      final muscleDaysForWorkout =
-          muscleDayMaps.where((m) => m['workoutId'] == workout['id']).map((
-            muscleDay,
-          ) {
-            // Pega os exercícios do muscleDay atual
-            final exercisesForMuscleDay =
-                exerciseMaps
-                    .where((e) => e['muscleDayId'] == muscleDay['id'])
-                    .map((exercise) {
-                      return ExerciseEntity(
-                        id: exercise['id'],
-                        name: exercise['name'],
-                        sets: exercise['sets'],
-                        reps: exercise['reps'],
-                        weight: exercise['weight'],
-                        notes: exercise['notes'],
-                      );
-                    })
-                    .toList();
+      final muscleDaysForWorkout = muscleDayMaps.where((m) => m['workoutId'] == workout['id']).map((muscleDay) {
+        final exercisesForMuscleDay = exerciseMaps.where((e) => e['muscleDayId'] == muscleDay['id']).map((exercise) {
+          return ExerciseEntity(
+            id: exercise['id'],
+            name: exercise['name'],
+            sets: exercise['sets'],
+            reps: exercise['reps'],
+            weight: exercise['weight'],
+            notes: exercise['notes'],
+          );
+        }).toList();
 
-            return MuscleDayEntity(
-              id: muscleDay['id'],
-              type: muscleDay['type'],
-              muscleGroup: muscleDay['muscleGroups'],
-              exercises: exercisesForMuscleDay,
-            );
-          }).toList();
+        return MuscleDayEntity(
+          id: muscleDay['id'],
+          type: muscleDay['type'],
+          muscleGroup: muscleDay['muscleGroups'],
+          exercises: exercisesForMuscleDay,
+        );
+      }).toList();
 
       return WorkoutEntity(
         id: workout['id'],
@@ -136,23 +121,37 @@ final class WorkoutRepository implements IWorkoutRepository {
     }).toList();
   }
 
+  @override
+  Future<void> createWorkout(WorkoutEntity workout) async {
+    final String url = _remoteDataSource.environment?.urlWorkout ?? '';
+    final String body = jsonEncode(workout.toMap());
 
-@override
-Future<void> createWorkout(WorkoutEntity workout) async {
-  final String url = _remoteDataSource.environment?.urlWorkout ?? '';
-  final String body = jsonEncode(workout.toMap());
+    try {
+      final HttpResponseEntity? response = await _remoteDataSource.post(url, body);
 
-  try {
-    final HttpResponseEntity? response = await _remoteDataSource.post(url, body);
-
-    if (response == null || !response.toBool()) {
-      throw Exception('Erro ao criar treino');
+      if (response == null || !response.toBool()) {
+        throw Exception('Erro ao criar treino');
+      }
+    } catch (e) {
+      throw Exception('Falha ao enviar o treino: $e');
     }
-  } catch (e) {
-    throw Exception('Falha ao enviar o treino: $e');
   }
-}
 
+  @override
+  Future<List<ExerciseEntity>> getAllExercises() async {
+    final String url = _remoteDataSource.environment?.urlExercise ?? '';
 
-  
+    try {
+      final HttpResponseEntity? response = await _remoteDataSource.get(url);
+
+      if (response == null || !response.toBool() || response.data == null) {
+        throw Exception('Falha ao buscar exercícios.');
+      }
+
+      final List<dynamic> dataList = response.data;
+      return dataList.map((e) => ExerciseEntity.fromMap(e)).toList();
+    } catch (e) {
+      throw Exception('Erro ao carregar exercícios: $e');
+    }
+  }
 }
