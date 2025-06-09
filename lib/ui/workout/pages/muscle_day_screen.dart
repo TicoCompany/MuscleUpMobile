@@ -12,7 +12,7 @@ class MuscleDayPage extends StatelessWidget {
     final workoutType = muscleDays.isNotEmpty ? muscleDays[0].type.name : '';
 
     return Scaffold(
-      appBar: AppBar(title: Text('Dia $workoutType')),
+      appBar: AppBar(title: Text('Treino $workoutType')),
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: muscleDays.length,
