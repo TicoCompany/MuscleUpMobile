@@ -23,21 +23,37 @@ class WorkoutDetailsPage extends StatelessWidget {
             Text('Treino ${UtilEnum.getWorkoutTypeName(workout.type)}',
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 20),
-            ...types.map((type) => ElevatedButton(
-                 onPressed: () {
-                  // Filtra a lista muscleDays para pegar **todos** os MuscleDayEntity com o tipo atual
-                  final muscleDaysOfType = muscleDays.where((e) => e.type == type).toList();
+            ...types.map(
+  (type) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: ElevatedButton(
+      onPressed: () {
+        final muscleDaysOfType = muscleDays.where((e) => e.type == type).toList();
 
-                  Navigator.pushNamed(
-                    context,
-                    RouteGeneratorHelper.kMuscleDayDetails,
-                    arguments: muscleDaysOfType, // <-- lista, não um único objeto
-                  );
-                },
+        Navigator.pushNamed(
+          context,
+          RouteGeneratorHelper.kMuscleDayDetails,
+          arguments: muscleDaysOfType,
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        backgroundColor: const Color.fromARGB(255, 248, 244, 250), // roxinho suave
+        foregroundColor: const Color.fromARGB(255, 0, 0, 0), // cor do texto
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // cantos menos arredondados
+        ),
+        elevation: 4,
+        shadowColor: Colors.black.withOpacity(0.2),
+      ),
+      child: Text(
+        'Dia ${UtilEnum.getWorkoutTypeName(type)}',
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+    ),
+  ),
+),
 
-
-                  child: Text('Dia ${UtilEnum.getWorkoutTypeName(type)}'),
-                )),
           ],
         ),
       ),
