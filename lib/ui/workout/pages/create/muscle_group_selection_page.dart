@@ -31,6 +31,12 @@ class _MuscleGroupSelectionScreenBodyState
     extends State<_MuscleGroupSelectionScreenBody> {
   final List<List<MuscleGroupEnum>> _muscleDays = [];
 
+  void _removeMuscleDay(int index) {
+    setState(() {
+      _muscleDays.removeAt(index);
+    });
+  }
+
   void _addMuscleDay() {
     setState(() {
       _muscleDays.add([]);
@@ -88,8 +94,19 @@ class _MuscleGroupSelectionScreenBodyState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Dia ${type.name}',
-                              style: Theme.of(context).textTheme.titleMedium),
+                          Row(
+                            children: [
+                              Text(
+                                'Dia ${type.name}',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () => _removeMuscleDay(index),
+                              )
+                            ],
+                          ),
                           const SizedBox(height: 8),
                           Wrap(
                             spacing: 8,
