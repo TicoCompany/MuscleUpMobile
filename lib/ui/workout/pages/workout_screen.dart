@@ -26,58 +26,58 @@ class _WorkoutScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF6A7091), Colors.white],
+            stops: [0.0, 0.35],
+          ),
+        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 60),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 24),
               child: Text(
                 'Treinos',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 32,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
                 ),
               ),
             ),
+            const SizedBox(height: 16),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                children: [
-                  Text(
-                    'Meus Treinos',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(width: 24),
-                  Text(
-                    'Treinos Prontos',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF6A7091),
-                    ),
-                  ),
-                ],
+              child: Text(
+                'Meus Treinos',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black54,
+                ),
               ),
             ),
             const SizedBox(height: 12),
-            const Divider(height: 1),
             const Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 child: _WorkoutListWidget(),
               ),
             ),
+            Center(child: Text("Em breve")), // segunda aba placeholder
           ],
         ),
       ),
     );
   }
 }
+
 
 class _WorkoutListWidget extends StatelessWidget {
   const _WorkoutListWidget();
@@ -117,27 +117,43 @@ class _WorkoutListWidget extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F5F5),
+                    color: Colors.white.withOpacity(0.95),
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
-                        color: Colors.black12.withOpacity(0.1),
+                        color: Colors.black12,
                         blurRadius: 6,
-                        offset: const Offset(0, 3),
+                        offset: Offset(0, 3),
                       ),
                     ],
+
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        workout.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                      const Icon(Icons.fitness_center, size: 32, color: Color(0xFF6A7091)),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              workout.name,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Tipo: ${UtilEnum.getWorkoutTypeName(workout.type)}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Icon(Icons.arrow_forward_ios_rounded, size: 18),
+                      )
                     ],
                   ),
                 ),
@@ -151,3 +167,4 @@ class _WorkoutListWidget extends StatelessWidget {
     );
   }
 }
+
