@@ -127,7 +127,7 @@ class _WorkoutListWidget extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Tipo: ${UtilEnum.getWorkoutTypeName(workout.type)}',
+                              'Tipo: ${UtilEnum.getWorkoutInfoTypeName(workout.type)}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,

@@ -1,16 +1,20 @@
+import 'dart:io';
+
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/core/enum/workout/muscle_group_enum.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/muscle_day_entity.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/workout_entity.dart';
 import 'package:muscle_up_mobile/data/repositories/workout/workout_repository.dart';
+import 'package:muscle_up_mobile/core/enum/workout/rokout_info_type_enum.dart';
+import 'package:flutter/material.dart';
 
 class FakeWorkoutRepository implements IWorkoutRepository {
   final List<WorkoutEntity> _fakeWorkouts = [
     WorkoutEntity(
       id: 1,
       name: 'Treino Hipertrofia',
-      type: WorkoutTypeEnum.AB,
+      type: workoutInfoTypeEnum.ab,
       muscleDays: [
         MuscleDayEntity(
           id: 101,
@@ -93,11 +97,14 @@ class FakeWorkoutRepository implements IWorkoutRepository {
     _fakeWorkouts.add(workout);
   }
 
-  @override
-  Future<void> createWorkout(WorkoutEntity workout) async {
-    await Future.delayed(Duration(milliseconds: 300)); // simula carregamento
-    _fakeWorkouts.add(workout);
-  }
+ @override
+Future<void> createWorkout(WorkoutEntity workout) async {
+  await Future.delayed(Duration(milliseconds: 300)); // simula carregamento
+
+  // Adicionar o treino à lista simulada
+  _fakeWorkouts.add(workout);
+}
+
 
   @override
   Future<List<ExerciseEntity>> getAllExercises() async {

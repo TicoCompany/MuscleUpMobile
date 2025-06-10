@@ -44,8 +44,13 @@ final class RouteGeneratorHelper {
       kWorkoutMuscles when args is WorkoutCreateViewModel =>
           createRoutePage(MuscleGroupSelectionPage(viewModel: args)),
 
-      kWorkoutExercises when args is WorkoutCreateViewModel =>
-          createRoutePage(ExerciseSelectionPage(viewModel: args)),
+      kWorkoutExercises when args is Map<String, dynamic> =>
+    createRoutePage(ExerciseSelectionPage(
+      viewModel: args['viewModel'], // Passando o viewModel
+      dayType: args['dayType'],     // Passando o dayType
+      muscleGroup: args['muscleGroup'], // Passando o muscleGroup
+    )),
+
 
       // Resumo do treino (nova tela)
       kWorkoutSummary when args is WorkoutCreateViewModel =>

@@ -20,7 +20,7 @@ class WorkoutDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Treino ${UtilEnum.getWorkoutTypeName(workout.type)}',
+            Text('Treino ${UtilEnum.getWorkoutInfoTypeName(workout.type)}',
                 style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 20),
             ...types.map(

@@ -5,13 +5,7 @@ enum WorkoutTypeEnum {
   D,
   E,
   F,
-  G,
-  AB,
-  ABC,
-  ABCD,
-  ABCDE,
-  ABCDEF,
-  ABCDEFG,
+  G
 }
 
 

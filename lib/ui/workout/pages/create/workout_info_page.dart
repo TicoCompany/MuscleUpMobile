@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muscle_up_mobile/core/enum/workout/rokout_info_type_enum.dart';
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_create_viewmodel.dart';
 import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_create_factory_viewmodel.dart';
 import 'package:muscle_up_mobile/routing/route_generator.dart';
+import 'package:muscle_up_mobile/utils/util_enum.dart';
 
 class WorkoutInfoPage extends StatelessWidget {
   final WorkoutCreateViewModel? viewModel;
@@ -29,10 +31,11 @@ class _WorkoutInfoScreenBody extends StatefulWidget {
 class _WorkoutInfoScreenBodyState extends State<_WorkoutInfoScreenBody> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  workoutInfoTypeEnum? _selectedinfoType;
   WorkoutTypeEnum? _selectedType;
 
   void _submit() {
-    if (!_formKey.currentState!.validate() || _selectedType == null) {
+    if (!_formKey.currentState!.validate() || _selectedinfoType == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Preencha todos os campos')),
       );
@@ -40,7 +43,7 @@ class _WorkoutInfoScreenBodyState extends State<_WorkoutInfoScreenBody> {
     }
 
     final viewModel = context.read<WorkoutCreateViewModel>();
-    viewModel.setWorkoutInfo(_nameController.text, _selectedType!);
+    viewModel.setWorkoutInfo(_nameController.text, _selectedinfoType!);
 
     Navigator.pushNamed(
   context,
@@ -73,18 +76,18 @@ class _WorkoutInfoScreenBodyState extends State<_WorkoutInfoScreenBody> {
                     value == null || value.isEmpty ? 'Obrigatório' : null,
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<WorkoutTypeEnum>(
+              DropdownButtonFormField<workoutInfoTypeEnum>(
                 decoration: const InputDecoration(labelText: 'Tipo de Treino'),
-                value: _selectedType,
-                items: WorkoutTypeEnum.values
+                value: _selectedinfoType,
+                items: workoutInfoTypeEnum.values
                     .map((e) => DropdownMenuItem(
                           value: e,
-                          child: Text(e.name),
+                          child: Text(UtilEnum.getWorkoutInfoTypeName(e)),
                         ))
                     .toList(),
                 onChanged: (value) {
                   setState(() {
-                    _selectedType = value;
+                    _selectedinfoType = value;
                   });
                 },
                 validator: (value) =>

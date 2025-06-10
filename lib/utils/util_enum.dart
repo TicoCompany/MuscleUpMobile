@@ -1,6 +1,6 @@
 // utils/util_enum.dart
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
-
+import 'package:muscle_up_mobile/core/enum/workout/rokout_info_type_enum.dart';
 abstract class UtilEnum {
   static String getWorkoutTypeName(WorkoutTypeEnum type) {
     switch (type) {
@@ -18,19 +18,27 @@ abstract class UtilEnum {
         return 'F';
       case WorkoutTypeEnum.G:
         return 'G';
-      case WorkoutTypeEnum.AB:
+    }
+  }
+
+  static String getWorkoutInfoTypeName(workoutInfoTypeEnum type) {
+    switch (type) {
+      case workoutInfoTypeEnum.A:
+        return 'A';
+      case workoutInfoTypeEnum.ab:
         return 'AB';
-      case WorkoutTypeEnum.ABC:
+      case workoutInfoTypeEnum.abc:
         return 'ABC';
-      case WorkoutTypeEnum.ABCD:
+      case workoutInfoTypeEnum.abcd:
         return 'ABCD';
-      case WorkoutTypeEnum.ABCDE:
+      case workoutInfoTypeEnum.abcde:
         return 'ABCDE';
-      case WorkoutTypeEnum.ABCDEF:
+      case workoutInfoTypeEnum.abcdef:
         return 'ABCDEF';
-      case WorkoutTypeEnum.ABCDEFG:
+      case workoutInfoTypeEnum.abcdefg:
         return 'ABCDEFG';
     }
   }
 }
+
 

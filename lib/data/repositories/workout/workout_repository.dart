@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
+import 'package:muscle_up_mobile/core/enum/workout/rokout_info_type_enum.dart';
 import 'package:muscle_up_mobile/core/enum/workout/workout_type_enum.dart';
 import 'package:muscle_up_mobile/core/library/extensions.dart';
 import 'package:muscle_up_mobile/domain/entities/workout/exercice_entity.dart';
@@ -112,9 +114,9 @@ final class WorkoutRepository implements IWorkoutRepository {
       return WorkoutEntity(
         id: workout['id'],
         name: workout['name'],
-        type: WorkoutTypeEnum.values.firstWhere(
+        type: workoutInfoTypeEnum.values.firstWhere(
           (e) => e.name == workout['type'],
-          orElse: () => WorkoutTypeEnum.A,
+          orElse: () => workoutInfoTypeEnum.A,
         ),
         muscleDays: muscleDaysForWorkout,
       );
@@ -122,20 +124,22 @@ final class WorkoutRepository implements IWorkoutRepository {
   }
 
   @override
-  Future<void> createWorkout(WorkoutEntity workout) async {
-    final String url = _remoteDataSource.environment?.urlWorkout ?? '';
-    final String body = jsonEncode(workout.toMap());
+Future<void> createWorkout(WorkoutEntity workout) async {
+  final String url = _remoteDataSource.environment?.urlWorkout ?? '';
+  final String body = jsonEncode(workout.toMap());
 
-    try {
-      final HttpResponseEntity? response = await _remoteDataSource.post(url, body);
+  try {
+    final HttpResponseEntity? response = await _remoteDataSource.post(url, body);
 
-      if (response == null || !response.toBool()) {
-        throw Exception('Erro ao criar treino');
-      }
-    } catch (e) {
-      throw Exception('Falha ao enviar o treino: $e');
+    if (response == null || !response.toBool()) {
+      throw Exception('Erro ao criar treino');
     }
+
+  } catch (e) {
+    throw Exception('Falha ao enviar o treino: $e');
   }
+}
+
 
   @override
   Future<List<ExerciseEntity>> getAllExercises() async {
