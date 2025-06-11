@@ -7,25 +7,32 @@ import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_factory_viewmodel
 import 'package:muscle_up_mobile/utils/util_enum.dart';
 import 'package:muscle_up_mobile/routing/route_generator.dart';
 
-class WorkoutPage extends StatelessWidget {
+class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
+
+  @override
+  State<WorkoutPage> createState() => _WorkoutPageState();
+}
+
+class _WorkoutPageState extends State<WorkoutPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<WorkoutViewModel>(
       create: (_) => WorkoutFactoryViewModel().create(context)..loadWorkouts(),
-      child: const _WorkoutScreenBody(),
-    );
-  }
-}
-
-class _WorkoutScreenBody extends StatelessWidget {
-  const _WorkoutScreenBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -114,7 +121,7 @@ class _WorkoutListWidget extends StatelessWidget {
 
           return ListView.separated(
             itemCount: workouts.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, __) => const SizedBox(height: 16),
             itemBuilder: (context, index) {
               final workout = workouts[index];
               return GestureDetector(
@@ -125,7 +132,7 @@ class _WorkoutListWidget extends StatelessWidget {
                       arguments: workout,
                     ),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 249, 249, 250),
                     borderRadius: BorderRadius.circular(16),

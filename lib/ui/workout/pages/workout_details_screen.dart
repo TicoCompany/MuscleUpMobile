@@ -14,11 +14,16 @@ class WorkoutDetailsPage extends StatelessWidget {
     final types = muscleDays.map((e) => e.type).toSet().toList();
 
     return Scaffold(
-      appBar: AppBar(title: Text(workout.name)),
+      appBar: AppBar(
+        title: const Text('Treinos'),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Treino ${UtilEnum.getWorkoutInfoTypeName(workout.type)}',
                 style: const TextStyle(fontSize: 18)),
@@ -54,6 +59,41 @@ class WorkoutDetailsPage extends StatelessWidget {
   ),
 ),
 
+                      Navigator.pushNamed(
+                        context,
+                        RouteGeneratorHelper.kMuscleDayDetails,
+                        arguments: muscleDaysOfType,
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 6,
+                            offset: const Offset(2, 2),
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.fitness_center),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Treino ${UtilEnum.getWorkoutTypeName(type)}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )),
           ],
         ),
       ),

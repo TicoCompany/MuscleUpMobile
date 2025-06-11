@@ -31,11 +31,13 @@ class _MuscleGroupSelectionScreenBodyState
     extends State<_MuscleGroupSelectionScreenBody> {
   final Map<WorkoutTypeEnum, List<MuscleGroupEnum>> _muscleDays = {};
 
+
   @override
   void initState() {
     super.initState();
     // Inicializando as sessões com base nos valores de WorkoutInfoTypeEnum
     _initializeMuscleDays();
+
   }
 
   // Função para inicializar as seções com base no tipo de treino

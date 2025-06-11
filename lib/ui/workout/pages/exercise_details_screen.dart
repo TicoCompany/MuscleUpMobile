@@ -9,26 +9,64 @@ class ExerciseDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(exercise.name)),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _InfoRow(label: 'Nome', value: exercise.name),
-            const SizedBox(height: 12),
-            _InfoRow(label: 'Séries', value: '${exercise.sets}'),
-            const SizedBox(height: 12),
-            _InfoRow(label: 'Repetições', value: '${exercise.reps}'),
-            const SizedBox(height: 12),
-            _InfoRow(
-              label: 'Carga',
-              value: exercise.weight != null ? '${exercise.weight} kg' : '—',
+            // Botão de voltar e título
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      exercise.name,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 12),
-            _InfoRow(
-              label: 'Anotações',
-              value: exercise.notes?.isNotEmpty == true ? exercise.notes! : '—',
+
+            // Conteúdo
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Detalhes do exercício:',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    _DetailCard(label: 'Séries', value: '${exercise.sets}x'),
+                    _DetailCard(label: 'Repetições', value: '${exercise.reps}'),
+                    _DetailCard(
+                      label: 'Carga',
+                      value: exercise.weight != null ? '${exercise.weight} kg' : '—',
+                    ),
+                    _DetailCard(
+                      label: 'Anotações',
+                      value: exercise.notes?.isNotEmpty == true ? exercise.notes! : '—',
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -37,23 +75,42 @@ class ExerciseDetailsPage extends StatelessWidget {
   }
 }
 
-class _InfoRow extends StatelessWidget {
+class _DetailCard extends StatelessWidget {
   final String label;
   final String value;
 
-  const _InfoRow({required this.label, required this.value});
+  const _DetailCard({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('$label: ',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-        Expanded(
-          child: Text(value, style: const TextStyle(fontSize: 16)),
-        ),
-      ],
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 6,
+            offset: const Offset(2, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.fitness_center, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              '$label: $value',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
