@@ -31,36 +31,63 @@ class _WorkoutScreenBody extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
           automaticallyImplyLeading: true,
-          title: const Text(
-            'Treinos',
-            style: TextStyle(color: Colors.black),
-          ),
+          title: const Text('Treinos', style: TextStyle(color: Colors.black)),
           bottom: const TabBar(
             labelColor: Color(0xFF6A7091),
             unselectedLabelColor: Colors.black54,
             indicatorColor: Color(0xFF6A7091),
             labelStyle: TextStyle(fontWeight: FontWeight.w600),
-            tabs: [
-              Tab(text: 'Meus Treinos'),
-              Tab(text: 'Treinos Prontos'),
-            ],
+            tabs: [Tab(text: 'Meus Treinos'), Tab(text: 'Treinos Prontos')],
           ),
         ),
         backgroundColor: Color(0xFFFAF7FF), // fundo claro suave
-        body: const TabBarView(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: _WorkoutListWidget(),
-            ),
-            Center(child: Text("Em breve")), // segunda aba placeholder
-          ],
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            children: [
+              Expanded(
+                child: const TabBarView(
+                  children: [
+                    _WorkoutListWidget(),
+                    Center(child: Text("Em breve")), // segunda aba placeholder
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16), // Pequeno espaçamento
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteGeneratorHelper.kWorkoutInfo, // Rota para criar treino
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF6A7091), // Cor do botão
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 5,
+                ),
+                child: const Text(
+                  'Criar Novo Treino',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
 
 class _WorkoutListWidget extends StatelessWidget {
   const _WorkoutListWidget();
@@ -69,7 +96,8 @@ class _WorkoutListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WorkoutViewModel, IRequestState<List<WorkoutEntity>>>(
       builder: (context, state) {
-        if (state is RequestProcessingState || state is RequestInitiationState) {
+        if (state is RequestProcessingState ||
+            state is RequestInitiationState) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -90,28 +118,32 @@ class _WorkoutListWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               final workout = workouts[index];
               return GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteGeneratorHelper.kWorkoutDetails,
-                  arguments: workout,
-                ),
+                onTap:
+                    () => Navigator.pushNamed(
+                      context,
+                      RouteGeneratorHelper.kWorkoutDetails,
+                      arguments: workout,
+                    ),
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 249, 249, 250), 
+                    color: Color.fromARGB(255, 249, 249, 250),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.08), 
+                        color: Colors.black.withOpacity(0.08),
                         blurRadius: 12,
                         offset: Offset(0, 6),
                       ),
                     ],
-
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.fitness_center, size: 24, color: Color(0xFF6A7091)),
+                      const Icon(
+                        Icons.fitness_center,
+                        size: 24,
+                        color: Color(0xFF6A7091),
+                      ),
                       const SizedBox(width: 16),
                       Expanded(
                         child: Column(
@@ -135,7 +167,7 @@ class _WorkoutListWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -149,4 +181,3 @@ class _WorkoutListWidget extends StatelessWidget {
     );
   }
 }
-

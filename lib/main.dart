@@ -4,7 +4,7 @@ import 'package:muscle_up_mobile/configs/injection_conteiner.dart' as injector;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await injector.init();  // inicializa injeção de dependência
+  await injector.init(); // inicializa injeção de dependência
   runApp(const MyApp());
 }
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      initialRoute: RouteGeneratorHelper.kWorkoutInfo,
+      initialRoute: RouteGeneratorHelper.kHome,
       onGenerateRoute: RouteGeneratorHelper.generateRoute,
     );
   }
