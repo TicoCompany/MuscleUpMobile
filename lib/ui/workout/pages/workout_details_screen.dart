@@ -25,52 +25,39 @@ class WorkoutDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Abas de navegação (somente estilo)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'Meus Treinos',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      height: 2,
-                      width: 100,
-                      color: Colors.deepPurple,
-                    )
-                  ],
-                ),
-                const Text(
-                  'Treinos Prontos',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Meus Treinos',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ...types.map((type) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: GestureDetector(
-                    onTap: () {
-                      final muscleDaysOfType =
-                          muscleDays.where((e) => e.type == type).toList();
+            Text('Treino ${UtilEnum.getWorkoutInfoTypeName(workout.type)}',
+                style: const TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
+            ...types.map(
+  (type) => Padding(
+    padding: const EdgeInsets.only(bottom: 12),
+    child: ElevatedButton(
+      onPressed: () {
+        final muscleDaysOfType = muscleDays.where((e) => e.type == type).toList();
+
+        Navigator.pushNamed(
+          context,
+          RouteGeneratorHelper.kMuscleDayDetails,
+          arguments: muscleDaysOfType,
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+        backgroundColor: const Color.fromARGB(255, 248, 244, 250), // roxinho suave
+        foregroundColor: const Color.fromARGB(255, 0, 0, 0), // cor do texto
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // cantos menos arredondados
+        ),
+        elevation: 4,
+        shadowColor: Colors.black.withOpacity(0.2),
+      ),
+      child: Text(
+        'Dia ${UtilEnum.getWorkoutTypeName(type)}',
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+    ),
+  ),
+),
 
                       Navigator.pushNamed(
                         context,

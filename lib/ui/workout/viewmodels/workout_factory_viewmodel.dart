@@ -19,7 +19,7 @@ final class WorkoutFactoryViewModel implements IFactoryViewModel<WorkoutViewMode
     return WorkoutViewModel(workoutRepository);
     */
 
-    final IWorkoutRepository workoutRepository = FakeWorkoutRepository();
+    final IWorkoutRepository workoutRepository = getIt<IWorkoutRepository>();
 
     return WorkoutViewModel(workoutRepository);
   }

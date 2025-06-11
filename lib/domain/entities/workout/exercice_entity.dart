@@ -1,17 +1,16 @@
-
 class ExerciseEntity {
-  final int id;
-  final String name;
-  final int sets;
-  final int reps;
-  final double? weight;
-  final String? notes;
+  final int id;  // Não é mais final
+  String name;
+  int? sets;
+  int? reps;
+  double? weight;
+  String? notes;  // Não é mais final
 
-  const ExerciseEntity({
+  ExerciseEntity({
     required this.id,
     required this.name,
-    required this.sets,
-    required this.reps,
+    this.sets,
+    this.reps,
     this.weight,
     this.notes,
   });

@@ -11,6 +11,7 @@ import 'package:muscle_up_mobile/ui/workout/pages/workout_screen.dart';
 import 'package:muscle_up_mobile/ui/workout/pages/workout_details_screen.dart';
 import 'package:muscle_up_mobile/ui/workout/pages/muscle_day_screen.dart';
 import 'package:muscle_up_mobile/ui/workout/pages/exercise_details_screen.dart';
+import 'package:muscle_up_mobile/ui/workout/pages/home_page.dart';
 
 // Páginas do fluxo de criação de treino
 import 'package:muscle_up_mobile/ui/workout/pages/create/workout_info_page.dart';
@@ -27,29 +28,39 @@ final class RouteGeneratorHelper {
     return switch (settings.name) {
       kInitial => createRoutePage(const WorkoutPage()),
       kLogin => createRoutePage(const LoginPage()),
-      kHome => createRoutePage(const LoginPage()),
+      kHome => createRoutePage(const HomePage()),
 
-      kWorkoutDetails when args is WorkoutEntity =>
-          createRoutePage(WorkoutDetailsPage(workout: args)),
+      kWorkoutDetails when args is WorkoutEntity => createRoutePage(
+        WorkoutDetailsPage(workout: args),
+      ),
 
-      kMuscleDayDetails when args is List<MuscleDayEntity> =>
-          createRoutePage(MuscleDayPage(muscleDays: args)),
+      kMuscleDayDetails when args is List<MuscleDayEntity> => createRoutePage(
+        MuscleDayPage(muscleDays: args),
+      ),
 
-      kExerciseDetails when args is ExerciseEntity =>
-          createRoutePage(ExerciseDetailsPage(exercise: args)),
+      kExerciseDetails when args is ExerciseEntity => createRoutePage(
+        ExerciseDetailsPage(exercise: args),
+      ),
 
       // Criação de treino
       kWorkoutInfo => createRoutePage(const WorkoutInfoPage()),
 
-      kWorkoutMuscles when args is WorkoutCreateViewModel =>
-          createRoutePage(MuscleGroupSelectionPage(viewModel: args)),
+      kWorkoutMuscles when args is WorkoutCreateViewModel => createRoutePage(
+        MuscleGroupSelectionPage(viewModel: args),
+      ),
 
-      kWorkoutExercises when args is WorkoutCreateViewModel =>
-          createRoutePage(ExerciseSelectionPage(viewModel: args)),
+      kWorkoutExercises when args is Map<String, dynamic> => createRoutePage(
+        ExerciseSelectionPage(
+          viewModel: args['viewModel'], // Passando o viewModel
+          dayType: args['dayType'], // Passando o dayType
+          muscleGroup: args['muscleGroup'], // Passando o muscleGroup
+        ),
+      ),
 
       // Resumo do treino (nova tela)
-      kWorkoutSummary when args is WorkoutCreateViewModel =>
-          createRoutePage(WorkoutSummaryPage(viewModel: args)),
+      kWorkoutSummary when args is WorkoutCreateViewModel => createRoutePage(
+        WorkoutSummaryPage(viewModel: args),
+      ),
 
       _ => createRouteError(),
     };

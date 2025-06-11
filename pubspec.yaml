@@ -39,6 +39,7 @@ dependencies:
   sqflite: ^2.4.2
   dio: ^5.8.0+1
   flutter_bloc: ^9.1.1
+  mockito: ^5.4.6
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,7 @@ flutter:
   assets:
     - assets/muscleup_icon.png
     - assets/muscleup_logof.png
+    - assets/muscleup_banner.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

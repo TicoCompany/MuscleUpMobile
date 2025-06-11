@@ -34,49 +34,62 @@ class _WorkoutPageState extends State<WorkoutPage> with SingleTickerProviderStat
     return BlocProvider<WorkoutViewModel>(
       create: (_) => WorkoutFactoryViewModel().create(context)..loadWorkouts(),
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 60),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Text(
-                'Treinos',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          automaticallyImplyLeading: true,
+          title: const Text('Treinos', style: TextStyle(color: Colors.black)),
+          bottom: const TabBar(
+            labelColor: Color(0xFF6A7091),
+            unselectedLabelColor: Colors.black54,
+            indicatorColor: Color(0xFF6A7091),
+            labelStyle: TextStyle(fontWeight: FontWeight.w600),
+            tabs: [Tab(text: 'Meus Treinos'), Tab(text: 'Treinos Prontos')],
+          ),
+        ),
+        backgroundColor: Color(0xFFFAF7FF), // fundo claro suave
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            children: [
+              Expanded(
+                child: const TabBarView(
+                  children: [
+                    _WorkoutListWidget(),
+                    Center(child: Text("Em breve")), // segunda aba placeholder
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TabBar(
-              controller: _tabController,
-              labelColor: Colors.deepPurple,
-              unselectedLabelColor: Colors.black54,
-              indicatorColor: Colors.deepPurple,
-              indicatorWeight: 2.5,
-              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-              tabs: const [
-                Tab(text: 'Meus Treinos'),
-                Tab(text: 'Treinos Prontos'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: _WorkoutListWidget(),
+              const SizedBox(height: 16), // Pequeno espaçamento
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    RouteGeneratorHelper.kWorkoutInfo, // Rota para criar treino
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF6A7091), // Cor do botão
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 50,
+                    vertical: 16,
                   ),
-                  Center(child: Text("Em breve")), // Aba "Treinos Prontos"
-                ],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 5,
+                ),
+                child: const Text(
+                  'Criar Novo Treino',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -90,7 +103,8 @@ class _WorkoutListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<WorkoutViewModel, IRequestState<List<WorkoutEntity>>>(
       builder: (context, state) {
-        if (state is RequestProcessingState || state is RequestInitiationState) {
+        if (state is RequestProcessingState ||
+            state is RequestInitiationState) {
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -111,35 +125,56 @@ class _WorkoutListWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               final workout = workouts[index];
               return GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  RouteGeneratorHelper.kWorkoutDetails,
-                  arguments: workout,
-                ),
+                onTap:
+                    () => Navigator.pushNamed(
+                      context,
+                      RouteGeneratorHelper.kWorkoutDetails,
+                      arguments: workout,
+                    ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(12),
+                    color: Color.fromARGB(255, 249, 249, 250),
+                    borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.08),
-                        blurRadius: 8,
-                        offset: const Offset(2, 4),
+                        blurRadius: 12,
+                        offset: Offset(0, 6),
                       ),
                     ],
                   ),
                   child: Row(
                     children: [
-                      Text(
-                        workout.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                      const Icon(
+                        Icons.fitness_center,
+                        size: 24,
+                        color: Color(0xFF6A7091),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              workout.name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Tipo: ${UtilEnum.getWorkoutInfoTypeName(workout.type)}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const Spacer(),
-                      const Icon(Icons.arrow_forward_ios_rounded, size: 16),
                     ],
                   ),
                 ),

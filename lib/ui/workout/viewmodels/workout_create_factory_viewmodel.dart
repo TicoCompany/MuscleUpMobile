@@ -6,9 +6,15 @@ import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_create_viewmodel.
 final class WorkoutCreateFactoryViewModel implements IFactoryViewModel<WorkoutCreateViewModel> {
   @override
   WorkoutCreateViewModel create(BuildContext context) {
-    // Usamos um repositório fake para evitar falhas de rede durante o fluxo
-    // de criação de treino.
-    final IWorkoutRepository workoutRepository = FakeWorkoutRepository();
+    /*final IRemoteDataSource remoteDataSource = RemoteFactoryDataSource().create(); 
+    final IRelationalDataSource relationalDataSource = RelationalFactoryDataSource().create();
+
+    final IWorkoutRepository workoutRepository = WorkoutRepository(
+      remoteDataSource,
+      relationalDataSource,
+    );*/
+
+    final IWorkoutRepository workoutRepository = getIt<IWorkoutRepository>();
 
     return WorkoutCreateViewModel(workoutRepository);
   }
