@@ -30,7 +30,6 @@ class ExerciseSelectionPage extends StatelessWidget {
   }
 }
 
-
 class _WorkoutExercisesScreenBody extends StatefulWidget {
   final WorkoutTypeEnum dayType;
   final MuscleGroupEnum muscleGroup;
@@ -45,7 +44,8 @@ class _WorkoutExercisesScreenBody extends StatefulWidget {
       _WorkoutExercisesScreenBodyState();
 }
 
-class _WorkoutExercisesScreenBodyState extends State<_WorkoutExercisesScreenBody> {
+class _WorkoutExercisesScreenBodyState
+    extends State<_WorkoutExercisesScreenBody> {
   final TextEditingController _searchController = TextEditingController();
   List<ExerciseEntity> _filteredExercises = [];
 
@@ -53,26 +53,26 @@ class _WorkoutExercisesScreenBodyState extends State<_WorkoutExercisesScreenBody
   void initState() {
     super.initState();
     context.read<WorkoutCreateViewModel>().loadExercises();
-    _filteredExercises = context.read<WorkoutCreateViewModel>().availableExercises;
+    _filteredExercises =
+        context.read<WorkoutCreateViewModel>().availableExercises;
   }
 
-  // Filtrando os exercícios
   void _filterExercises() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      _filteredExercises = context.read<WorkoutCreateViewModel>().availableExercises
+      _filteredExercises = context
+          .read<WorkoutCreateViewModel>()
+          .availableExercises
           .where((exercise) => exercise.name.toLowerCase().contains(query))
           .toList();
     });
   }
 
-  // Alternando a seleção de exercício
   void _toggleExercise(ExerciseEntity exercise) {
     final viewModel = context.read<WorkoutCreateViewModel>();
     viewModel.toggleExercise(widget.dayType, widget.muscleGroup, exercise);
   }
 
-  // Finalizando o treino
   void _submit() {
     Navigator.pushNamed(
       context,
@@ -86,49 +86,117 @@ class _WorkoutExercisesScreenBodyState extends State<_WorkoutExercisesScreenBody
     final viewModel = context.watch<WorkoutCreateViewModel>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Selecione os Exercícios')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Selecione os Exercícios',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: [
-            // Campo de busca de exercícios
             TextField(
               controller: _searchController,
-              decoration: const InputDecoration(labelText: 'Pesquisar Exercício'),
+              decoration: InputDecoration(
+                labelText: 'Pesquisar Exercício',
+                prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: const Color(0xFFF5F5F5),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               onChanged: (_) => _filterExercises(),
             ),
-            const SizedBox(height: 8),
-            // Lista de exercícios
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: _filteredExercises.length,
                 itemBuilder: (context, index) {
                   final exercise = _filteredExercises[index];
-                  final isSelected = viewModel.isExerciseSelected(widget.dayType, widget.muscleGroup, exercise);
-                  return ListTile(
-                    title: Text(exercise.name),
-                    trailing: IconButton(
-                      icon: Icon(isSelected ? Icons.check_circle : Icons.add_circle_outline),
-                      onPressed: () {
-                        _toggleExercise(exercise);
+                  final isSelected = viewModel.isExerciseSelected(
+                      widget.dayType, widget.muscleGroup, exercise);
+
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      title: Text(
+                        exercise.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          isSelected
+                              ? Icons.check_circle
+                              : Icons.add_circle_outline,
+                          color: isSelected
+                              ? const Color(0xFF2C2F57)
+                              : Colors.grey[600],
+                        ),
+                        onPressed: () => _toggleExercise(exercise),
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) => _buildExerciseDialog(exercise),
+                        );
                       },
                     ),
-                    onTap: () {
-                      // Exibe o diálogo de configuração do exercício
-                      showDialog(
-                        context: context,
-                        builder: (_) => _buildExerciseDialog(exercise),
-                      );
-                    },
                   );
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            // Botão de finalização
-            ElevatedButton(
-              onPressed: viewModel.getSelectedExercisesForDayAndMuscleGroup(widget.dayType, widget.muscleGroup).isEmpty ? null : _submit,
-              child: const Text('Finalizar Treino'),
+            const SizedBox(height: 24),
+            SafeArea(
+              top: false,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: viewModel
+                          .getSelectedExercisesForDayAndMuscleGroup(
+                              widget.dayType, widget.muscleGroup)
+                          .isEmpty
+                      ? null
+                      : _submit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2C2F57),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                    'Finalizar Treino',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -136,7 +204,6 @@ class _WorkoutExercisesScreenBodyState extends State<_WorkoutExercisesScreenBody
     );
   }
 
-  // Função para configurar o exercício
   Widget _buildExerciseDialog(ExerciseEntity exercise) {
     final TextEditingController setsController = TextEditingController();
     final TextEditingController repsController = TextEditingController();
@@ -147,20 +214,31 @@ class _WorkoutExercisesScreenBodyState extends State<_WorkoutExercisesScreenBody
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextField(controller: setsController, decoration: const InputDecoration(labelText: 'Séries'), keyboardType: TextInputType.number),
-          TextField(controller: repsController, decoration: const InputDecoration(labelText: 'Repetições'), keyboardType: TextInputType.number),
-          TextField(controller: notesController, decoration: const InputDecoration(labelText: 'Notas')),
+          TextField(
+            controller: setsController,
+            decoration: const InputDecoration(labelText: 'Séries'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: repsController,
+            decoration: const InputDecoration(labelText: 'Repetições'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            controller: notesController,
+            decoration: const InputDecoration(labelText: 'Notas'),
+          ),
         ],
       ),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.pop(context);
-            // Atualiza o exercício com as informações fornecidas
-            exercise.sets = int.parse(setsController.text);
-            exercise.reps = int.parse(repsController.text);
+            exercise.sets = int.tryParse(setsController.text) ?? 0;
+            exercise.reps = int.tryParse(repsController.text) ?? 0;
             exercise.notes = notesController.text;
-
             setState(() {
               _toggleExercise(exercise);
             });
@@ -168,9 +246,7 @@ class _WorkoutExercisesScreenBodyState extends State<_WorkoutExercisesScreenBody
           child: const Text('Adicionar'),
         ),
         TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
           child: const Text('Cancelar'),
         ),
       ],

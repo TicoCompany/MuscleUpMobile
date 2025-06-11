@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:muscle_up_mobile/routing/route_generator.dart';
 import 'package:muscle_up_mobile/configs/assets_helper.dart';
+import 'package:muscle_up_mobile/routing/route_generator.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,52 +8,68 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFAF7FF), // fundo claro suave
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: Image.asset(AssetsHelper.kIcone, height: 50),
-        // Substitua com a logo depois
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Logo (substitua o asset para a imagem correta)
-              Image.asset(AssetsHelper.kBanner, height: 150),
-              const SizedBox(height: 350),
-              // Botão estilizado para navegar até os treinos
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    RouteGeneratorHelper
-                        .kInitial, // Navegar para a tela de treinos
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF6A7091), // cor do botão
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+      backgroundColor: Colors.white, // Fundo branco liso
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Título do topo
+            Padding(
+  padding: const EdgeInsets.only(top: 32.0),
+  child: Center(
+    child: Image.asset(
+      AssetsHelper.kBanner,
+      height: 100, // ajuste o tamanho conforme necessário
+      fit: BoxFit.contain,
+    ),
+  ),
+),
+
+
+            // Texto de boas-vindas + botão
+            Padding(
+              padding: const EdgeInsets.only(bottom: 350),
+              child: Column(
+                children: [
+                  Text(
+                    'Bem-vindo ao MuscleUp',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
                   ),
-                  elevation: 5,
-                ),
-                child: const Text(
-                  'Meus Treinos',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        RouteGeneratorHelper.kWorkouts,
+                      );
+                    },
+                    icon: Icon(Icons.fitness_center, size: 18),
+                    label: Text('Ver Treinos'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF2C2F57),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      textStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

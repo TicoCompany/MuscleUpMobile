@@ -26,7 +26,7 @@ final class RouteGeneratorHelper {
     final Object? args = settings.arguments;
 
     return switch (settings.name) {
-      kInitial => createRoutePage(const WorkoutPage()),
+      kWorkouts => createRoutePage(const WorkoutPage()),
       kLogin => createRoutePage(const LoginPage()),
       kHome => createRoutePage(const HomePage()),
 
@@ -77,7 +77,7 @@ final class RouteGeneratorHelper {
     );
   }
 
-  static const String kInitial = '/';
+  static const String kWorkouts = '/';
   static const String kLogin = '/login';
   static const String kHome = '/home';
 

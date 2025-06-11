@@ -46,11 +46,10 @@ class _WorkoutInfoScreenBodyState extends State<_WorkoutInfoScreenBody> {
     viewModel.setWorkoutInfo(_nameController.text, _selectedinfoType!);
 
     Navigator.pushNamed(
-  context,
-  RouteGeneratorHelper.kWorkoutMuscles,
-  arguments: viewModel,
-);
-
+      context,
+      RouteGeneratorHelper.kWorkoutMuscles,
+      arguments: viewModel,
+    );
   }
 
   @override
@@ -62,22 +61,45 @@ class _WorkoutInfoScreenBodyState extends State<_WorkoutInfoScreenBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Novo Treino')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Novo Treino',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Nome do Treino'),
+                decoration: InputDecoration(
+                  labelText: 'Nome do Treino',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFF5F5F5),
+                ),
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Obrigatório' : null,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               DropdownButtonFormField<workoutInfoTypeEnum>(
-                decoration: const InputDecoration(labelText: 'Tipo de Treino'),
+                decoration: InputDecoration(
+                  labelText: 'Tipo de Treino',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
+                  fillColor: const Color(0xFFF5F5F5),
+                ),
                 value: _selectedinfoType,
                 items: workoutInfoTypeEnum.values
                     .map((e) => DropdownMenuItem(
@@ -93,14 +115,33 @@ class _WorkoutInfoScreenBodyState extends State<_WorkoutInfoScreenBody> {
                 validator: (value) =>
                     value == null ? 'Selecione um tipo' : null,
               ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _submit,
-                  child: const Text('Continuar'),
-                ),
-              ),
+             const SizedBox(height: 40), // Dá um respiro antes do botão
+SafeArea(
+  top: false,
+  child: SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: _submit,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF2C2F57),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: 5,
+      ),
+      child: const Text(
+        'Continuar',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: Colors.white,
+        ),
+      ),
+    ),
+  ),
+),
+
             ],
           ),
         ),

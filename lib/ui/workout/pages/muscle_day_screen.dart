@@ -12,8 +12,15 @@ class MuscleDayPage extends StatelessWidget {
     final workoutType = muscleDays.isNotEmpty ? muscleDays[0].type.name : '';
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Treino $workoutType'),
+        title: Text(
+          'Treino $workoutType',
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+          ),
+        ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -34,14 +41,14 @@ class MuscleDayPage extends StatelessWidget {
                   'Exercícios focados no ${muscleDay.muscleGroup.name.toLowerCase()}.',
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
                 const SizedBox(height: 12),
                 ...muscleDay.exercises.map(
                   (e) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
-                    child: GestureDetector(
+                    child: InkWell(
                       onTap: () {
                         Navigator.pushNamed(
                           context,
@@ -49,22 +56,23 @@ class MuscleDayPage extends StatelessWidget {
                           arguments: e,
                         );
                       },
-                      child: Container(
-                        padding: const EdgeInsets.all(16),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Ink(
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade100,
+                          color: const Color(0xFFF5F5F5),
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withOpacity(0.08),
                               blurRadius: 6,
-                              offset: const Offset(2, 2),
-                            )
+                              offset: const Offset(0, 3),
+                            ),
                           ],
                         ),
+                        padding: const EdgeInsets.all(16),
                         child: Row(
                           children: [
-                            const Icon(Icons.fitness_center),
+                            const Icon(Icons.fitness_center, size: 20),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(

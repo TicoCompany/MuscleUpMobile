@@ -73,17 +73,41 @@ class FakeWorkoutRepository implements IWorkoutRepository {
     ),
   ];
 
-  final List<ExerciseEntity> _fakeExercises = List.generate(
-    10,
-    (i) => ExerciseEntity(
-      id: i,
-      name: 'Exercício ${i + 1}',
-      sets: 3,
-      reps: 12,
-      weight: 20.0 + i,
-      notes: 'Nota para exercício ${i + 1}',
-    ),
-  );
+  final List<ExerciseEntity> _fakeExercises = [
+  ExerciseEntity(
+    id: 1,
+    name: 'Supino Reto',
+    sets: 4,
+    reps: 10,
+    weight: 60,
+    notes: 'Aquecimento leve na primeira série',
+  ),
+  ExerciseEntity(
+    id: 2,
+    name: 'Tríceps Testa',
+    sets: 3,
+    reps: 12,
+    weight: 25,
+    notes: 'Executar com barra EZ',
+  ),
+  ExerciseEntity(
+    id: 3,
+    name: 'Puxada na Barra Fixa',
+    sets: 3,
+    reps: 8,
+    weight: 0,
+    notes: 'Peso corporal',
+  ),
+  ExerciseEntity(
+    id: 4,
+    name: 'Rosca Alternada',
+    sets: 3,
+    reps: 10,
+    weight: 14,
+    notes: 'Com halteres',
+  ),
+];
+
 
   @override
   Future<List<WorkoutEntity>> getAllWorkouts() async {

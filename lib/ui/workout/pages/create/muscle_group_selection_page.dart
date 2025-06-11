@@ -31,27 +31,21 @@ class _MuscleGroupSelectionScreenBodyState
     extends State<_MuscleGroupSelectionScreenBody> {
   final Map<WorkoutTypeEnum, List<MuscleGroupEnum>> _muscleDays = {};
 
-
   @override
   void initState() {
     super.initState();
-    // Inicializando as sessões com base nos valores de WorkoutInfoTypeEnum
     _initializeMuscleDays();
-
   }
 
-  // Função para inicializar as seções com base no tipo de treino
   void _initializeMuscleDays() {
     final workoutType = context.read<WorkoutCreateViewModel>().workoutType!;
 
-    // Filtrando e criando sessões com base no tipo de treino
     for (var type in WorkoutTypeEnum.values) {
       if (workoutType.name.toLowerCase().contains(type.name.toLowerCase())) {
-        _muscleDays[type] = []; // Inicializa a lista de grupos musculares vazia para cada dia
+        _muscleDays[type] = [];
       }
     }
 
-    // Preservar os grupos musculares selecionados se houver alguma seleção salva
     for (var type in _muscleDays.keys) {
       final selectedGroups = context.read<WorkoutCreateViewModel>().muscleDays
           .where((muscleDay) => muscleDay.type == type)
@@ -61,36 +55,29 @@ class _MuscleGroupSelectionScreenBodyState
     }
   }
 
-  // Função para alternar a seleção de grupo muscular
   void _toggleMuscleGroup(WorkoutTypeEnum type, MuscleGroupEnum group) {
-  setState(() {
-    if (_muscleDays[type]?.contains(group) ?? false) {
-      _muscleDays[type]?.remove(group); // Remove o grupo muscular da lista
-      // Também removemos da viewModel, garantindo que o grupo muscular desmarcado não seja passado
-      context.read<WorkoutCreateViewModel>().removeMuscleGroup(type, group);
-    } else {
-      _muscleDays[type]?.add(group); // Adiciona o grupo muscular à lista
-      // Adiciona o grupo muscular à viewModel, garantindo que o selecionado seja mantido
-      context.read<WorkoutCreateViewModel>().addMuscleDay(type, group);
-    }
-  });
-}
-
+    setState(() {
+      if (_muscleDays[type]?.contains(group) ?? false) {
+        _muscleDays[type]?.remove(group);
+        context.read<WorkoutCreateViewModel>().removeMuscleGroup(type, group);
+      } else {
+        _muscleDays[type]?.add(group);
+        context.read<WorkoutCreateViewModel>().addMuscleDay(type, group);
+      }
+    });
+  }
 
   void _submit() {
     final viewModel = context.read<WorkoutCreateViewModel>();
-
-    // Para cada tipo de treino (A, B, C...), adicionar os grupos musculares selecionados
     _muscleDays.forEach((type, selectedGroups) {
       for (final group in selectedGroups) {
-        viewModel.addMuscleDay(type, group); // Adiciona o dia com o grupo muscular
+        viewModel.addMuscleDay(type, group);
       }
     });
 
-    // Navega para a tela de exercícios
     Navigator.pushNamed(
       context,
-      RouteGeneratorHelper.kWorkoutSummary, // Página de exercícios
+      RouteGeneratorHelper.kWorkoutSummary,
       arguments: viewModel,
     );
   }
@@ -98,9 +85,18 @@ class _MuscleGroupSelectionScreenBodyState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Seleção de Grupos Musculares')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          'Seleção de Grupos Musculares',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           children: [
             Expanded(
@@ -110,42 +106,84 @@ class _MuscleGroupSelectionScreenBodyState
                   final workoutType = _muscleDays.keys.elementAt(index);
                   final selectedGroups = _muscleDays[workoutType]!;
 
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Título do dia baseado no tipo de treino (A, B, C...)
-                          Text(
-                            'Dia ${workoutType.name}',
-                            style: Theme.of(context).textTheme.titleMedium,
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF5F5F5),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dia ${workoutType.name}',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                           ),
-                          const SizedBox(height: 8),
-                          Wrap(
-                            spacing: 8,
-                            children: MuscleGroupEnum.values.map((group) {
-                              final isSelected = selectedGroups.contains(group);
-                              return FilterChip(
-                                label: Text(group.name),
-                                selected: isSelected,
-                                onSelected: (_) =>
-                                    _toggleMuscleGroup(workoutType, group), // Alterna a seleção
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: MuscleGroupEnum.values.map((group) {
+                            final isSelected = selectedGroups.contains(group);
+                            return FilterChip(
+                              label: Text(group.name),
+                              selected: isSelected,
+                              selectedColor: const Color(0xFF2C2F57),
+                              checkmarkColor: Colors.white,
+                              labelStyle: TextStyle(
+                                color: isSelected ? Colors.white : Colors.black,
+                              ),
+                              backgroundColor: Colors.grey[300],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              onSelected: (_) =>
+                                  _toggleMuscleGroup(workoutType, group),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                   );
                 },
               ),
             ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text('Continuar'),
+            const SizedBox(height: 24),
+            SafeArea(
+              top: false,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _submit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2C2F57),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                    'Continuar',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
