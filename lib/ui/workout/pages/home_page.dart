@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muscle_up_mobile/routing/route_generator.dart';
+import 'package:muscle_up_mobile/configs/assets_helper.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -12,19 +13,19 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: Image.asset('assets/muscleup_icon.png', height: 50),
+        title: Image.asset(AssetsHelper.kIcone, height: 50),
         // Substitua com a logo depois
       ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Logo (substitua o asset para a imagem correta)
-              Image.asset('assets/muscleup_icon.png', height: 150),
-              const SizedBox(height: 32),
+              Image.asset(AssetsHelper.kBanner, height: 150),
+              const SizedBox(height: 350),
               // Botão estilizado para navegar até os treinos
               ElevatedButton(
                 onPressed: () {

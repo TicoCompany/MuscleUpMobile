@@ -64,6 +64,7 @@ flutter:
   assets:
     - assets/muscleup_icon.png
     - assets/muscleup_logof.png
+    - assets/muscleup_banner.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
