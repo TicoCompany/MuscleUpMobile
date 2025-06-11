@@ -1,7 +1,6 @@
 import 'package:muscle_up_mobile/configs/factory_viewmodel.dart';
 import 'package:muscle_up_mobile/data/datasources/core/data_source_factory.dart';
 import 'package:muscle_up_mobile/data/repositories/workout/workout_repository.dart';
-import 'package:muscle_up_mobile/data/repositories/workout/fake_workout_repository.dart';
 import 'package:muscle_up_mobile/ui/workout/viewmodels/workout_create_viewmodel.dart';
 
 final class WorkoutCreateFactoryViewModel implements IFactoryViewModel<WorkoutCreateViewModel> {
@@ -15,7 +14,7 @@ final class WorkoutCreateFactoryViewModel implements IFactoryViewModel<WorkoutCr
       relationalDataSource,
     );*/
 
-    final IWorkoutRepository workoutRepository = FakeWorkoutRepository();
+    final IWorkoutRepository workoutRepository = getIt<IWorkoutRepository>();
 
     return WorkoutCreateViewModel(workoutRepository);
   }

@@ -5,6 +5,8 @@ import 'package:muscle_up_mobile/core/service/app_service.dart';
 import 'package:muscle_up_mobile/core/service/migrate_service.dart';
 import 'package:muscle_up_mobile/core/service/storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:muscle_up_mobile/data/repositories/workout/workout_repository.dart';
+import 'package:muscle_up_mobile/data/repositories/workout/fake_workout_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -20,4 +22,9 @@ Future<void> init() async {
   getIt.registerSingleton<IStorageService>(
     StorageService(MigrateService(), await SharedPreferences.getInstance()),
   );
+
+  /// #region WorkoutRepository
+  final IWorkoutRepository workoutRepository = FakeWorkoutRepository();
+  getIt.registerSingleton<IWorkoutRepository>(workoutRepository);
 }
+

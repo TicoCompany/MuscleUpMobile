@@ -86,6 +86,16 @@ final class WorkoutCreateViewModel extends Cubit<IRequestState<void>> {
     }
   }
 
+  void _updateMuscleDaysWithExercises() {
+  for (var day in _muscleDays) {
+    final exercises = _selectedExercisesByDay[day.type]?[day.muscleGroup] ?? [];
+    day.exercises
+      ..clear()
+      ..addAll(exercises);
+  }
+}
+
+
   // ▶ Submete o treino pro backend
   Future<void> submitWorkout() async {
   if (_workoutName == null || _workoutType == null || _muscleDays.isEmpty) {
@@ -101,6 +111,7 @@ final class WorkoutCreateViewModel extends Cubit<IRequestState<void>> {
       type: _workoutType!,
       muscleDays: List.unmodifiable(_muscleDays),
     );
+    _updateMuscleDaysWithExercises(); // Atualiza os dias de treino com os exercícios selecionados
     await _repository.createWorkout(workout);
     
     // Atualiza a lista de treinos após a criação do novo treino
